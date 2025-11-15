@@ -1,0 +1,162 @@
+# Global .gitignore — OS, editors, common languages, build artifacts, secrets
+
+# === OS ===
+.DS_Store
+.DS_Store?
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Editors / IDEs ===
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+*.swp
+*~.sw?
+*.kate-swp
+
+# === Logs and runtime files ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.pid
+*.seed
+*.pid.lock
+
+# === Environment / secret files ===
+.env
+.env.local
+.env.*.local
+!.env.example
+secrets.*
+credentials
+*.pem
+*.key
+*.p12
+*.jks
+
+# === Node / frontend ===
+node_modules/
+dist/
+build/
+.cache/
+.next/
+.nuxt/
+out/
+.gatsby/
+.parcel-cache/
+.vite/
+.public/
+.esbuild/
+
+# Yarn v1/v2 caches (adjust if you intentionally commit .yarn/*)
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.cjs
+.pnp.js
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+venv/
+.venv/
+pip-wheel-metadata/
+htmlcov/
+.coverage
+.pytest_cache/
+.mypy_cache/
+.pytype/
+
+# === Java / JVM ===
+*.class
+*.jar
+*.war
+*.ear
+target/
+build/
+out/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# Maven local repo (often large; normally not in project root)
+.m2/repository/
+
+# Gradle
+.gradle/
+**/build/
+
+# === Go ===
+bin/
+obj/
+pkg/
+vendor/
+
+# === Rust ===
+/target/
+**/*.rlib
+
+# === C / C++ ===
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+build/
+cmake-build-*/
+
+# === .NET ===
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# === Build / packaging / artifacts ===
+dist-*/
+*.tgz
+*.zip
+*.tar.gz
+*.egg-info/
+.eggs/
+*.egg
+
+# === Coverage / CI artifacts ===
+coverage/
+coverage.xml
+lcov.info
+.nyc_output/
+
+# === Documentation build ===
+docs/_build/
+site/
+
+# === Containers / OS images ===
+docker-compose.override.yml
+*.stackdump
+
+# === Misc caches ===
+.cache/
+*.cache
+node-repl-history
+*.module-cache
+
+# End — add project-specific ignores below

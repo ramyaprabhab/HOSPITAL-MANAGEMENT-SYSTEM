@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage Availability
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h4>Manage Your Weekly Availability</h4>
+                </div>
+                
+                {% with messages=get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="alert alert-{{category}} mb-0" role="alert">
+                        {{message}}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+
+                <div class="card-body">
+                    <p>Set your start and end times for each day. Leave both times blank (or check "Unavailable") to mark a day as unavailable.</p>
+                    <form method="POST">
+                        <table class="table table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Unavailable</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for day in schedule %}
+                                <tr>
+                                    <td><strong>{{ day.day_name }}</strong></td>
+                                    <td>
+                                        <input type="time" class="form-control" 
+                                               name="start_time_{{ day.day_name }}" 
+                                               value="{{ day.start_time or '' }}">
+                                    </td>
+                                    <td>
+                                        <input type="time" class="form-control" 
+                                               name="end_time_{{ day.day_name }}" 
+                                               value="{{ day.end_time or '' }}">
+                                    </td>
+                                    <td class="text-center" style="vertical-align: middle;">
+                                        <input type="checkbox" class="form-check-input" 
+                                               name="unavailable_{{ day.day_name }}"
+                                               {% if not day.start_time %}checked{% endif %}>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button type="submit" class="btn btn-primary btn-block">Save Schedule</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

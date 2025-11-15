@@ -1,0 +1,39 @@
+/* RAMMIDOC purple theme */
+:root{
+  --purple-900:#2b0b3a;
+  --purple-700:#5b2a6e;
+  --purple-500:#7b3fb0;
+  --purple-300:#a87ce0;
+  --accent:#9b5de5;
+  --muted:#f6f3fb;
+}
+body{
+  background: linear-gradient(180deg, var(--muted), white 40%);
+  color: #2b0b3a;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+.navbar{
+  background: linear-gradient(90deg,var(--purple-700),var(--purple-500));
+}
+.navbar a, .navbar-brand, .navbar .nav-link { color: white !important; font-weight:600; }
+.btn-primary{
+  background:var(--purple-500);
+  border-color:var(--purple-700);
+  box-shadow: 0 4px 10px rgba(123,63,176,0.12);
+}
+.card {
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(39,18,61,0.08);
+  border: 1px solid rgba(123,63,176,0.08);
+}
+.header-logo {
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: white;
+  letter-spacing: 0.6px;
+}
+.badge-status-booked { background:#a87ce0; color:#fff; padding:6px 8px; border-radius:8px;}
+.badge-status-completed { background:#6f42c1; color:#fff; padding:6px 8px; border-radius:8px;}
+.badge-status-cancelled { background:#6c757d; color:#fff; padding:6px 8px; border-radius:8px;}
+.form-control:focus { border-color: var(--purple-500); box-shadow: 0 0 0 0.15rem rgba(155,93,229,0.15); }
+.footer { padding:18px; text-align:center; color:#6c4b86; }

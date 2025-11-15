@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Booking
+{% endblock title %}
+
+{% block body %}
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    {{message}}
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">ID</th>
+      
+      {% if current_user.usertype=="Doctor" %}
+        <th scope="col">Patient Name</th>
+        <th scope="col">Patient Email</th>
+      {% else %}
+        <th scope="col">Doctor Name</th>
+        <th scope="col">Department</th>
+      {% endif %}
+
+      <th scope="col">Status</th>
+      <th scope="col">Symptom</th>
+      <th scope="col">Date</th>
+      <th scope="col">Time</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for app in query %}
+    <tr>
+      <th scope="row">{{app.id}}</th> {% if current_user.usertype=="Doctor" %}
+        <td>{{app.patient.username}}</td> <td>{{app.patient.email}}</td>
+      {% else %}
+        <td>{{app.doctor.doctorname}}</td> <td>{{app.doctor.dept}}</td>
+      {% endif %}
+
+      <td>{{app.status}}</td>
+      <td>{{app.disease}}</td>
+      <td>{{app.date}}</td>
+      <td>{{app.time}}</td>
+
+      <td>
+        {% if current_user.usertype=="Patient" %}
+          {% if app.status == 'Booked' %}
+            <a href="/edit/{{app.id}}"><button class="btn btn-sm btn-success">Reschedule</button></a>
+            <a href="/delete/{{app.id}}"><button onclick="return confirm('Are you sure?');" class="btn btn-sm btn-danger">Cancel</button></a>
+          {% elif app.status == 'Completed' %}
+            <a href="/treatment/view/{{app.id}}"><button class="btn btn-sm btn-info">View History</button></a>
+          {% else %}
+            <span class="badge badge-secondary">{{app.status}}</span>
+          {% endif %}
+        
+        {% elif current_user.usertype=="Doctor" %}
+          {% if app.status == 'Booked' %}
+            <a href="/treatment/add/{{app.id}}"><button class="btn btn-sm btn-primary">Add Treatment</button></a>
+          {% elif app.status == 'Completed' %}
+            <a href="/treatment/view/{{app.id}}"><button class="btn btn-sm btn-info">View History</button></a>
+          {% else %}
+            <span class="badge badge-secondary">{{app.status}}</span>
+          {% endif %}
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock body %}

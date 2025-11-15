@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage Doctors
+{% endblock title %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h4>Add New Doctor</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/doctors" method="POST">
+                        <div class="form-group">
+                            <label for="doctorname">Doctor Name</label>
+                            <input type="text" class="form-control" name="doctorname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Doctor Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                            <small>Email will be used for the doctor's login.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="dept">Department / Specialization</label>
+                            <input type="text" class="form-control" name="dept" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Set Initial Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Add Doctor</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <h4>All Doctor Profiles</h4>
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor.did }}</td>
+                        <td>{{ doctor.doctorname }}</td>
+                        <td>{{ doctor.email }}</td>
+                        <td>{{ doctor.dept }}</td>
+                        <td>
+                            <a href="/admin/doctors/edit/{{ doctor.did }}" class="btn btn-sm btn-success">Edit</a>
+                            <a href="/admin/doctors/delete/{{ doctor.did }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

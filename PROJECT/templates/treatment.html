@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Treatment Details
+{% endblock title %}
+
+{% block body %}
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h4>Treatment for Appointment #{{ appointment.id }}</h4>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Patient: {{ appointment.patient.username }}</h5>
+          <p class="card-text">
+            <strong>Date & Time:</strong> {{ appointment.date }} at {{ appointment.time }}<br>
+            <strong>Reported Symptom:</strong> {{ appointment.disease }}
+          </p>
+          <hr>
+
+          <form method="POST">
+            <div class="form-group">
+              <label for="diagnosis"><strong>Diagnosis</strong></label>
+              <textarea class="form-control" id="diagnosis" name="diagnosis" rows="3" {{ readonly }}>{{ treatment.diagnosis if treatment }}</textarea>
+            </div>
+            <div class="form-group">
+              <label for="prescription"><strong>Prescription</strong></label>
+              <textarea class="form-control" id="prescription" name="prescription" rows="3" {{ readonly }}>{{ treatment.prescription if treatment }}</textarea>
+            </div>
+            <div class="form-group">
+              <label for="notes"><strong>Doctor's Notes</strong></label>
+              <textarea class="form-control" id="notes" name="notes" rows="2" {{ readonly }}>{{ treatment.notes if treatment }}</textarea>
+            </div>
+            
+            {% if current_user.usertype == 'Doctor' and appointment.status == 'Booked' %}
+            <button type="submit" class="btn btn-primary btn-block">Save Treatment & Mark Complete</button>
+            {% endif %}
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

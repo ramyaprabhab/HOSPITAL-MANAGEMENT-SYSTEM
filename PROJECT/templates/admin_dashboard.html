@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Admin Dashboard
+{% endblock title %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">System Statistics</h5>
+                    <canvas id="statsChart" data-stats='{{ stats | tojson | safe }}'></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <hr class="my-4">
+    <h4>All Appointments</h4>
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>ID</th>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Symptom</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in all_appointments %}
+            <tr>
+                <td>{{ app.id }}</td>
+                <td>{{ app.patient.username }}</td>
+                <td>{{ app.doctor.doctorname }}</td>
+                <td>{{ app.disease }}</td>
+                <td>{{ app.date }}</td>
+                <td>{{ app.time }}</td>
+                <td>
+                    <span class="badge 
+                        {% if app.status == 'Booked' %}badge-primary
+                        {% elif app.status == 'Completed' %}badge-success
+                        {% elif app.status == 'Cancelled' %}badge-danger
+                        {% else %}badge-secondary
+                        {% endif %}">
+                        {{ app.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+<script>
+  // Wait for the document to be ready
+  document.addEventListener("DOMContentLoaded", function() {
+    // Get the canvas element
+        const ctx = document.getElementById('statsChart');
+    
+        // Read the 'stats' JSON from the canvas data attribute to avoid template braces inside JS
+        const statsData = JSON.parse(ctx.getAttribute('data-stats'));
+
+    // Create the chart
+    new Chart(ctx, {
+      type: 'bar', // Type of chart
+      data: {
+        labels: ['Doctors', 'Patients', 'Total Appointments'],
+        datasets: [{
+          label: 'Total Count',
+          data: [
+            statsData.doctors, 
+            statsData.patients, 
+            statsData.appointments
+          ],
+          backgroundColor: [
+            'rgba(54, 162, 235, 0.6)', // Blue
+            'rgba(75, 192, 192, 0.6)', // Green
+            'rgba(255, 206, 86, 0.6)'  // Yellow
+          ],
+          borderColor: [
+            'rgba(54, 162, 235, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 206, 86, 1)'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false // Hide the legend
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+                // Ensure only whole numbers are shown
+                stepSize: 1
+            }
+          }
+        }
+      }
+    });
+  });
+</script>
+{% endblock body %}
