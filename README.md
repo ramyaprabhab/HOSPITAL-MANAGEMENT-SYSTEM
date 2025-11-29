@@ -28,7 +28,7 @@ Availability: Update weekly availability notes (e.g., "Mon-Fri 9 AM - 5 PM").
 
 Patient History: View the complete medical history of treated patients.
 
-## 🧑‍tm Patient
+## 🧑 Patient
 
 Registration: Self-registration and profile management.
 
