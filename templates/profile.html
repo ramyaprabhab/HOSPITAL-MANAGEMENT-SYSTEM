@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Profile</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.name.label }}{{ form.name(class_="form-control") }}</div>
+    <div class="mb-3">{{ form.contact.label }}{{ form.contact(class_="form-control") }}</div>
+    {% if current_user.role == 'doctor' %}<div class="mb-3">{{ form.specialization.label }}{{ form.specialization(class_="form-control") }}</div>{% endif %}
+    {% if current_user.role == 'patient' %}<div class="mb-3">{{ form.age.label }}{{ form.age(class_="form-control") }}</div>{% endif %}
+    <div class="mb-3">{{ form.password.label }}{{ form.password(class_="form-control") }}</div>
+    <button class="btn btn-success">Update</button>
+</form>
+{% endblock %}

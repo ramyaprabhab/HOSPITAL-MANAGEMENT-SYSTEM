@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Book Appointment</h2>
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.doctor.label }}{{ form.doctor(class_='form-select') }}</div>
+    <div class="mb-3">{{ form.date.label }}{{ form.date(class_='form-control') }}</div>
+    <div class="mb-3">{{ form.time.label }}{{ form.time(class_='form-select') }}</div>
+    <button class="btn btn-primary">Book</button>
+</form>
+{% endblock %}

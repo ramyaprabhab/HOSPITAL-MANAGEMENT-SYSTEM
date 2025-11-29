@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h2>Manage Doctors</h2>
+    <a class="btn btn-primary" href="{{ url_for('admin_doctors_add') }}">Add New Doctor</a>
+  </div>
+
+  <table class="table mt-3 table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Contact</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for d in doctors %}
+        <tr>
+            <td>{{ d.name }}</td>
+            <td>{{ d.specialization }}</td>
+            <td>{{ d.contact }}</td>
+            <td>{{ d.email }}</td>
+            <td>
+                <a href="{{ url_for('admin_doctors_edit', id=d.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                
+                <form action="{{ url_for('admin_remove_user', user_id=d.id) }}" method="POST" style="display:inline" onsubmit="return confirm('Are you sure? This will delete the doctor and their appointments.');">
+                    <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                </form>
+            </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

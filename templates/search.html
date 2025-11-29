@@ -1,0 +1,11 @@
+    {% extends 'base.html' %}
+    {% block content %}
+      <h2>Search results for '{{ q }}'</h2>
+      <table class="table"><thead><tr><th>Name</th><th>Role/Specialization</th></tr></thead>
+      <tbody>
+        {% for u in users %}
+          <tr><td>{{ u.name }}</td><td>{{ u.role }}{% if u.specialization %} / {{ u.specialization }}{% endif %}</td></tr>
+        {% endfor %}
+      </tbody></table>
+    {% endblock %}
+    

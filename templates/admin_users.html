@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Manage Users</h2>
+<a href="{{ url_for('admin_add_doctor') }}" class="btn btn-success mb-3">Add New Doctor</a>
+<form class="d-flex mb-3"><input class="form-control me-2" type="search" name="q" placeholder="Search"><button class="btn btn-outline-success">Search</button></form>
+<table class="table">
+    <thead><tr><th>Role</th><th>Name</th><th>Email</th><th>Actions</th></tr></thead>
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.role|upper }}</td><td>{{ u.name }}</td><td>{{ u.email }}</td>
+            <td>
+                <a href="{{ url_for('admin_edit_user', id=u.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                <form action="{{ url_for('delete_user', id=u.id) }}" method="POST" style="display:inline"><button class="btn btn-sm btn-danger">Delete</button></form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

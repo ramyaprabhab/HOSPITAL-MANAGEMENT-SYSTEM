@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit User: {{ user.name }}</h2>
+<form method="POST">
+    <div class="mb-3"><label>Name</label><input type="text" name="name" class="form-control" value="{{ user.name }}"></div>
+    <div class="mb-3"><label>Contact</label><input type="text" name="contact" class="form-control" value="{{ user.contact }}"></div>
+    {% if user.role == 'doctor' %}
+    <div class="mb-3"><label>Specialization</label><input type="text" name="specialization" class="form-control" value="{{ user.specialization }}"></div>
+    {% endif %}
+    {% if user.role == 'patient' %}
+    <div class="mb-3"><label>Age</label><input type="number" name="age" class="form-control" value="{{ user.age }}"></div>
+    {% endif %}
+    <button class="btn btn-primary">Update</button>
+</form>
+{% endblock %}

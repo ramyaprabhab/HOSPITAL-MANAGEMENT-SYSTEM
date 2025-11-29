@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Patient Dashboard</h2>
+<div class="mb-3">
+    <a href="{{ url_for('book') }}" class="btn btn-primary">Book Appointment</a>
+    <a href="{{ url_for('profile') }}" class="btn btn-secondary">Edit Profile</a>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card"><div class="card-header">Find by Department</div>
+            <ul class="list-group list-group-flush">
+                {% for s in specializations %}
+                <li class="list-group-item"><a href="{{ url_for('doctors_by_spec', spec=s) }}">{{ s }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h3>Upcoming Appointments</h3>
+        <table class="table">
+            <tr><th>Date</th><th>Doctor</th><th>Status</th><th>Action</th></tr>
+            {% for a in upcoming %}
+            <tr>
+                <td>{{ a.date }} @ {{ a.time }}</td><td>{{ a.doctor.name }}</td><td>{{ a.status }}</td>
+                <td>{% if a.status == 'Booked' %}<form action="{{ url_for('cancel_appt', id=a.id) }}" method="POST"><button class="btn btn-sm btn-danger">Cancel</button></form>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <h3>History</h3>
+        <table class="table table-bordered">
+            <tr><th>Date</th><th>Doctor</th><th>Diagnosis</th><th>Rx</th></tr>
+            {% for h in history %}
+            <tr>
+                <td>{{ h.date }}</td><td>{{ h.doctor.name }}</td>
+                <td>{{ h.treatment[0].diagnosis if h.treatment else '-' }}</td>
+                <td>{{ h.treatment[0].prescription if h.treatment else '-' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

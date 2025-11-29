@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>All Appointments</h2>
+<table class="table">
+    <tr><th>Date</th><th>Doctor</th><th>Patient</th><th>Status</th><th>Action</th></tr>
+    {% for a in appts %}
+    <tr>
+        <td>{{ a.date }}</td><td>{{ a.doctor.name }}</td><td>{{ a.patient.name }}</td><td>{{ a.status }}</td>
+        <td>{% if a.status == 'Booked' %}<form action="{{ url_for('cancel_appt', id=a.id) }}" method="POST"><button class="btn btn-sm btn-danger">Cancel</button></form>{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<div class="row mt-4">
+    <div class="col-md-4"><div class="card bg-primary text-white"><div class="card-body"><h3>{{ doc_count }}</h3> Doctors</div></div></div>
+    <div class="col-md-4"><div class="card bg-success text-white"><div class="card-body"><h3>{{ pat_count }}</h3> Patients</div></div></div>
+    <div class="col-md-4"><div class="card bg-warning text-white"><div class="card-body"><h3>{{ appt_count }}</h3> Appointments</div></div></div>
+</div>
+<div class="mt-4">
+    <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">Manage Users</a>
+    <a href="{{ url_for('admin_appointments') }}" class="btn btn-info text-white">View All Appointments</a>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+    {% extends 'base.html' %}
+    {% block content %}
+      <h2>Add Doctor</h2>
+      <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">{{ form.name.label }}{{ form.name(class_='form-control') }}</div>
+        <div class="mb-3">{{ form.email.label }}{{ form.email(class_='form-control') }}</div>
+        <div class="mb-3">{{ form.specialization.label }}{{ form.specialization(class_='form-control') }}</div>
+        <div class="mb-3">{{ form.contact.label }}{{ form.contact(class_='form-control') }}</div>
+        <div class="mb-3">{{ form.submit(class_='btn btn-primary') }}</div>
+      </form>
+    {% endblock %}
+    
