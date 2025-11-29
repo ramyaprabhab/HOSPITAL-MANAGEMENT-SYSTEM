@@ -60,6 +60,12 @@ Python 3.x installed on your machine.
 
 Unzip the project folder or clone the repository.
 
+```
+git clone https://github.com/ramyaprabhab/HOSPITAL-MANAGEMENT-SYSTEM.git
+```
+```
+cd HOSPITAL-MANAGEMENT-SYSTEM
+```
 Open a terminal inside the project folder (HMS_Project/).
 
 Create a virtual environment:
