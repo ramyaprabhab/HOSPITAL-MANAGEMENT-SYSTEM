@@ -1,10 +1,10 @@
-Hospital Management System (HMS)
+# Hospital Management System (HMS)
 
 A web-based Hospital Management System built with Flask, SQLite, and Bootstrap. This application allows Admins to manage hospital records, Doctors to manage appointments and treatments, and Patients to book appointments and view their medical history.
 
-📋 Features
+## 📋 Features
 
-🏥 Admin (Hospital Staff)
+## 🏥 Admin (Hospital Staff)
 
 Pre-existing Login: Admin account is created programmatically.
 
@@ -16,7 +16,7 @@ View Appointments: Access a master list of all appointments (upcoming and past).
 
 Dashboard: View total counts of doctors, patients, and appointments.
 
-👨‍⚕️ Doctor
+## 👨‍⚕️ Doctor
 
 Dashboard: View upcoming appointments for the day and list of assigned patients.
 
@@ -28,7 +28,7 @@ Availability: Update weekly availability notes (e.g., "Mon-Fri 9 AM - 5 PM").
 
 Patient History: View the complete medical history of treated patients.
 
-🧑‍tm Patient
+## 🧑‍tm Patient
 
 Registration: Self-registration and profile management.
 
@@ -62,11 +62,11 @@ Unzip the project folder or clone the repository.
 
 Open a terminal inside the project folder (HMS_Project/).
 
-(Optional) Create a virtual environment:
-
+Create a virtual environment:
+```
 python3 -m venv venv
 source venv/bin/activate
-
+```
 
 Install dependencies:
 
@@ -79,40 +79,35 @@ Reset Database (First time only):
 Ensure there is no db.sqlite file in the folder (delete it if it exists) to allow the app to generate a fresh database with the default Admin.
 
 Start the server:
-
+```
 python3 app.py
-
+```
 
 Open your browser and go to:
+```
 http://127.0.0.1:5000/
+```
 
-🔑 Default Credentials
+## 🔑 Default Credentials
 
 Admin Login
 
-Email: admin@gmail.com
+Email: 
+```
+admin@gmail.com
+```
 
-Password: AdminPass123
+Password: 
+```
+AdminPass123
+```
 
 Doctor Login
 
 Doctors must be created by the Admin first.
+Default Password:  (Doctors can change this in "Edit Profile").
+```
+doctorpass
+```
 
-Default Password: doctorpass (Doctors can change this in "Edit Profile").
 
-📂 Project Structure
-
-HMS_Project/
-│
-├── app.py                  # Main application controller & routes
-├── config.py               # Configuration settings
-├── models.py               # Database models (User, Appointment, Treatment)
-├── forms.py                # WTForms definitions
-├── requirements.txt        # Python dependencies
-├── db.sqlite               # Database file (auto-generated)
-└── templates/              # HTML Templates (Jinja2)
-    ├── base.html           # Layout template
-    ├── index.html          # Landing page
-    ├── login.html          # Login page
-    ├── register.html       # Patient registration
-    ├── ... (Dashboard & Feature pages)
