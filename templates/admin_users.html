@@ -8,13 +8,13 @@
     <tbody>
         {% for u in users %}
         <tr>
-            <td>{{ u.role|upper }}</td><td>{{ u.name }}</td><td>{{ u.email }}</td>
+            <td>{{u.role|upper }}</td><td>{{u.name}}</td><td>{{u.email}}</td>
             <td>
-                <a href="{{ url_for('admin_edit_user', id=u.id) }}" class="btn btn-sm btn-warning">Edit</a>
-                <form action="{{ url_for('delete_user', id=u.id) }}" method="POST" style="display:inline"><button class="btn btn-sm btn-danger">Delete</button></form>
+                <a href="{{url_for('admin_edit_user', id=u.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                <form action="{{url_for('delete_user', id=u.id) }}" method="POST" style="display:inline"><button class="btn btn-sm btn-danger">Delete</button></form>
             </td>
         </tr>
-        {% endfor %}
+        {%endfor%}
     </tbody>
 </table>
-{% endblock %}
+{%endblock%}
