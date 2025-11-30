@@ -1,5 +1,6 @@
-{% extends 'base.html' %}
-{% block content %}
+{%extends 'base.html'%}
+{%block content%}
+# boking appointments
 <h2>Book Appointment</h2>
 <form method="post">
     {{ form.hidden_tag() }}
@@ -8,4 +9,4 @@
     <div class="mb-3">{{ form.time.label }}{{ form.time(class_='form-select') }}</div>
     <button class="btn btn-primary">Book</button>
 </form>
-{% endblock %}
+{%endblock%}
