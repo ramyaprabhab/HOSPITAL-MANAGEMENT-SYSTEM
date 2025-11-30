@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-{% block content %}
+{% block content%}
 <h2>Login</h2>
+# loign Page ka htnl
 <form method="post">
-    {{ form.hidden_tag() }}
+    {{form.hidden_tag() }}
     <div class="mb-3">{{ form.email.label(class_="form-label") }}{{ form.email(class_='form-control') }}</div>
     <div class="mb-3">{{ form.password.label(class_="form-label") }}{{ form.password(class_='form-control') }}</div>
     <div class="mb-3">{{ form.submit(class_='btn btn-primary') }}</div>
