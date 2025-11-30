@@ -1,37 +1,32 @@
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask,render_template,redirect,url_for,flash,request
 from config import Config
-from models import db, User, Appointment, Treatment
-from forms import LoginForm, RegisterForm, DoctorForm, AppointmentForm, ProfileForm, AvailabilityForm
-from flask_login import LoginManager, login_user, logout_user, current_user, login_required
-from datetime import date, datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+from models import db,User,Appointment,Treatment
+from forms import LoginForm,RegisterForm,DoctorForm,AppointmentForm,ProfileForm,AvailabilityForm
+from flask_login import LoginManager,login_user,logout_user,current_user,login_required
+from datetime import date,datetime
+from werkzeug.security import generate_password_hash,check_password_hash
 
-app = Flask(__name__)
+app=Flask(__name__)
 app.config.from_object(Config)
 db.init_app(app)
-
-login_manager = LoginManager()
+login_manager=LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'
+login_manager.login_view='login'
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-# --- SETUP: Create Admin Programmatically ---
 def create_admin_if_needed():
-    admin_email = 'admin@gmail.com'
+    admin_email='admin@gmail.com'
     if not User.query.filter_by(email=admin_email).first():
-        admin = User(email=admin_email, name='Admin', role='admin', password=generate_password_hash('AdminPass123'))
+        admin=User(email=admin_email, name='Admin', role='admin',password=generate_password_hash('AdminPass123'))
         db.session.add(admin)
         db.session.commit()
         print(f"Admin Created: {admin_email} / AdminPass123")
-
 with app.app_context():
     db.create_all()
     create_admin_if_needed()
 
-# --- AUTH ROUTES ---
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -49,12 +44,12 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
+    form=RegisterForm()
     if form.validate_on_submit():
         if User.query.filter_by(email=form.email.data).first():
             flash('Email already registered', 'warning')
             return redirect(url_for('register'))
-        user = User(email=form.email.data, name=form.name.data, role='patient', 
+        user=User(email=form.email.data, name=form.name.data, role='patient', 
                     contact=form.contact.data, age=form.age.data,
                     password=generate_password_hash(form.password.data))
         db.session.add(user)
@@ -69,7 +64,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-# --- DASHBOARDS ---
+#dasboard page
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -92,8 +87,6 @@ def doctor_dashboard():
         Appointment.doctor_id == current_user.id, 
         Appointment.date >= today
     ).order_by(Appointment.date, Appointment.time).all()
-    
-    # Get unique patients assigned to this doctor
     patient_ids = [a.patient_id for a in current_user.appointments_as_doctor]
     my_patients = User.query.filter(User.id.in_(patient_ids)).all() if patient_ids else []
     
@@ -112,10 +105,8 @@ def patient_dashboard():
         Appointment.patient_id == current_user.id,
         Appointment.status == 'Completed'
     ).order_by(Appointment.date.desc()).all()
-    
     return render_template('patient_dashboard.html', specializations=specializations, upcoming=upcoming, history=history)
-
-# --- PATIENT FEATURES ---
+#patient
 @app.route('/doctors/<spec>')
 @login_required
 def doctors_by_spec(spec):
@@ -159,8 +150,7 @@ def profile():
         flash('Profile Updated', 'success')
         return redirect(url_for('dashboard'))
     return render_template('profile.html', form=form)
-
-# --- DOCTOR FEATURES ---
+    
 @app.route('/doctor/availability', methods=['GET', 'POST'])
 @login_required
 def update_availability():
@@ -184,51 +174,50 @@ def treatment(appt_id):
         prescription = request.form.get('prescription')
         notes = request.form.get('notes')
         
-        tr = Treatment.query.filter_by(appointment_id=appt.id).first()
+        tr=Treatment.query.filter_by(appointment_id=appt.id).first()
         if not tr:
-            tr = Treatment(appointment_id=appt.id)
+            tr= Treatment(appointment_id=appt.id)
             db.session.add(tr)
             
-        tr.diagnosis = diagnosis
-        tr.prescription = prescription
-        tr.notes = notes
-        appt.status = 'Completed'
+        tr.diagnosis=diagnosis
+        tr.prescription=prescription
+        tr.notes=notes
+        appt.status='Completed'
         db.session.commit()
         flash('Treatment saved & Appointment Completed', 'success')
         return redirect(url_for('dashboard'))
     
-    existing = Treatment.query.filter_by(appointment_id=appt.id).first()
+    existing=Treatment.query.filter_by(appointment_id=appt.id).first()
     return render_template('treatment.html', appt=appt, existing=existing)
 
 @app.route('/history/<int:patient_id>')
 @login_required
 def view_history(patient_id):
-    patient = User.query.get_or_404(patient_id)
-    history = Appointment.query.filter_by(patient_id=patient.id, status='Completed').all()
+    patient=User.query.get_or_404(patient_id)
+    history=Appointment.query.filter_by(patient_id=patient.id, status='Completed').all()
     return render_template('history.html', patient=patient, history=history)
 
-# --- ADMIN FEATURES ---
 @app.route('/admin/users')
 @login_required
 def admin_users():
     if current_user.role != 'admin': return redirect(url_for('dashboard'))
-    q = request.args.get('q')
+    q=request.args.get('q')
     if q:
-        users = User.query.filter(User.name.contains(q) | User.email.contains(q) | User.contact.contains(q)).all()
+        users= User.query.filter(User.name.contains(q) | User.email.contains(q) | User.contact.contains(q)).all()
     else:
-        users = User.query.filter(User.role != 'admin').all()
+        users= User.query.filter(User.role != 'admin').all()
     return render_template('admin_users.html', users=users)
 
 @app.route('/admin/add_doctor', methods=['GET', 'POST'])
 @login_required
 def admin_add_doctor():
     if current_user.role != 'admin': return redirect(url_for('dashboard'))
-    form = DoctorForm()
+    form=DoctorForm()
     if form.validate_on_submit():
         if User.query.filter_by(email=form.email.data).first():
             flash('Email exists', 'warning')
         else:
-            doc = User(email=form.email.data, name=form.name.data, role='doctor', 
+            doc= User(email=form.email.data, name=form.name.data, role='doctor', 
                        specialization=form.specialization.data, contact=form.contact.data,
                        password=generate_password_hash('doctorpass'))
             db.session.add(doc)
@@ -241,12 +230,12 @@ def admin_add_doctor():
 @login_required
 def admin_edit_user(id):
     if current_user.role != 'admin': return redirect(url_for('dashboard'))
-    user = User.query.get_or_404(id)
-    if request.method == 'POST':
-        user.name = request.form.get('name')
-        user.contact = request.form.get('contact')
-        if user.role == 'doctor': user.specialization = request.form.get('specialization')
-        if user.role == 'patient': user.age = request.form.get('age')
+    user= User.query.get_or_404(id)
+    if request.method=='POST':
+        user.name=request.form.get('name')
+        user.contact=request.form.get('contact')
+        if user.role=='doctor': user.specialization = request.form.get('specialization')
+        if user.role=='patient': user.age = request.form.get('age')
         db.session.commit()
         flash('User updated successfully', 'success')
         return redirect(url_for('admin_users'))
@@ -256,17 +245,16 @@ def admin_edit_user(id):
 @login_required
 def admin_appointments():
     if current_user.role != 'admin': return redirect(url_for('dashboard'))
-    appts = Appointment.query.order_by(Appointment.date.desc()).all()
+    appts=Appointment.query.order_by(Appointment.date.desc()).all()
     return render_template('admin_appointments.html', appts=appts)
 
 @app.route('/appt/cancel/<int:id>', methods=['POST'])
 @login_required
 def cancel_appt(id):
     appt = Appointment.query.get_or_404(id)
-    # Check permissions
-    if current_user.role == 'patient' and appt.patient_id != current_user.id:
+    if current_user.role=='patient' and appt.patient_id != current_user.id:
         return "Unauthorized", 403
-    appt.status = 'Cancelled'
+    appt.status='Cancelled'
     db.session.commit()
     flash('Appointment Cancelled', 'info')
     return redirect(request.referrer or url_for('dashboard'))
@@ -275,13 +263,12 @@ def cancel_appt(id):
 @login_required
 def delete_user(id):
     if current_user.role != 'admin': return redirect(url_for('dashboard'))
-    user = User.query.get_or_404(id)
-    # Delete related data first
+    user=User.query.get_or_404(id)
     Appointment.query.filter((Appointment.doctor_id==id) | (Appointment.patient_id==id)).delete()
     db.session.delete(user)
     db.session.commit()
     flash('User deleted', 'success')
     return redirect(url_for('admin_users'))
 
-if __name__ == '__main__':
+if __name__=='__main__':
     app.run(debug=True, port=5000)
