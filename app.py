@@ -61,7 +61,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-#dasboard page
+#dsbd pg
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -103,7 +103,7 @@ def patient_dashboard():
         Appointment.status == 'Completed'
     ).order_by(Appointment.date.desc()).all()
     return render_template('patient_dashboard.html', specializations=specializations, upcoming=upcoming, history=history)
-#patient
+#patient's dshbd
 @app.route('/doctors/<spec>')
 @login_required
 def doctors_by_spec(spec):
@@ -131,7 +131,7 @@ def book():
             flash('Appointment Booked!', 'success')
             return redirect(url_for('dashboard'))
     return render_template('book.html', form=form)
-
+#pf 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
@@ -147,7 +147,7 @@ def profile():
         flash('Profile Updated', 'success')
         return redirect(url_for('dashboard'))
     return render_template('profile.html', form=form)
-    
+    #dr avail thingy
 @app.route('/doctor/availability', methods=['GET', 'POST'])
 @login_required
 def update_availability():
@@ -161,7 +161,7 @@ def update_availability():
         flash('Availability updated', 'success')
         return redirect(url_for('dashboard'))
     return render_template('availability.html', form=form)
-
+#tremnts
 @app.route('/treatment/<int:appt_id>', methods=['GET', 'POST'])
 @login_required
 def treatment(appt_id):
@@ -183,7 +183,7 @@ def treatment(appt_id):
         db.session.commit()
         flash('Treatment saved & Appointment Completed','success')
         return redirect(url_for('dashboard'))
-    
+     
     existing=Treatment.query.filter_by(appointment_id=appt.id).first()
     return render_template('treatment.html',appt=appt,existing=existing)
 
@@ -193,7 +193,7 @@ def view_history(patient_id):
     patient=User.query.get_or_404(patient_id)
     history=Appointment.query.filter_by(patient_id=patient.id, status='Completed').all()
     return render_template('history.html', patient=patient, history=history)
-
+#aptmns users for d admin user thing
 @app.route('/admin/users')
 @login_required
 def admin_users():
@@ -237,7 +237,7 @@ def admin_edit_user(id):
         flash('User updated successfully', 'success')
         return redirect(url_for('admin_users'))
     return render_template('admin_edit_user.html', user=user)
-
+#apintmts funct
 @app.route('/admin/appointments')
 @login_required
 def admin_appointments():
