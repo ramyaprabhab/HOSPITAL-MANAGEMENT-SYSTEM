@@ -13,10 +13,10 @@
         {% if current_user.is_authenticated %}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
+        {%else%}
           <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Register</a></li>
-        {% endif %}
+        {%endif%}
       </ul>
     </div>
   </div>
@@ -26,10 +26,10 @@
     {% if messages %}
       {% for cat, msg in messages %}
         <div class="alert alert-{{cat}}">{{msg}}</div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-  {% block content %}{% endblock %}
+      {%endfor%}
+    {%endif%}
+  {%endwith%}
+  {%block content%}{%endblock%}
 </div>
 </body>
 </html>
