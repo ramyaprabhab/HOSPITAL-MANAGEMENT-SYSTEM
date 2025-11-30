@@ -1,14 +1,14 @@
-{% extends 'base.html' %}
+{%extends 'base.html' %}
 {% block content %}
 <h2>History: {{ patient.name }}</h2>
 {% for appt in history %}
 <div class="card mb-3"><div class="card-body">
-    <h5>{{ appt.date }} - Dr. {{ appt.doctor.name }}</h5>
+    <h5>{{ appt.date }} - Dr. {{appt.doctor.name }}</h5>
     {% if appt.treatment %}
-    <p><strong>Diagnosis:</strong> {{ appt.treatment[0].diagnosis }}</p>
-    <p><strong>Rx:</strong> {{ appt.treatment[0].prescription }}</p>
+    <p><strong>Diagnosis:</strong> {{appt.treatment[0].diagnosis }}</p>
+    <p><strong>Rx:</strong> {{appt.treatment[0].prescription }}</p>
     {% else %}<p>No notes.</p>{% endif %}
 </div></div>
 {% endfor %}
-<a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Back</a>
-{% endblock %}
+<a href="{{url_for('dashboard')}}" class="btn btn-secondary">Back</a>
+{%endblock %}
