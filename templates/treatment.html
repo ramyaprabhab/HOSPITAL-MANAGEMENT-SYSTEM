@@ -3,9 +3,9 @@
 <h2>Treatment Details</h2>
 <p>Patient: {{ appt.patient.name }}</p>
 <form method="post">
-    <div class="mb-3"><label>Diagnosis</label><textarea name="diagnosis" class="form-control">{{ existing.diagnosis if existing else '' }}</textarea></div>
-    <div class="mb-3"><label>Prescription</label><textarea name="prescription" class="form-control">{{ existing.prescription if existing else '' }}</textarea></div>
-    <div class="mb-3"><label>Notes</label><textarea name="notes" class="form-control">{{ existing.notes if existing else '' }}</textarea></div>
+    <div class="mb-3"><label>Diagnosis</label><textarea name="diagnosis" class="form-control">{{existing.diagnosis if existing else ''}}</textarea></div>
+    <div class="mb-3"><label>Prescription</label><textarea name="prescription" class="form-control">{{existing.prescription if existing else ''}}</textarea></div>
+    <div class="mb-3"><label>Notes</label><textarea name="notes" class="form-control">{{existing.notes if existing else ''}}</textarea></div>
     <button class="btn btn-primary">Save & Complete</button>
 </form>
-{% endblock %}
+{%endblock%}
