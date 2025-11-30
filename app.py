@@ -18,24 +18,22 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# --- SETUP: Create Admin Programmatically ---
+# admin login
 def create_admin_if_needed():
     admin_email = 'admin@gmail.com'
     if not User.query.filter_by(email=admin_email).first():
         admin = User(email=admin_email, name='Admin', role='admin', password=generate_password_hash('AdminPass123'))
         db.session.add(admin)
         db.session.commit()
-        print(f"Admin Created: {admin_email} / AdminPass123")
+        # print(f"Admin Created: {admin_email} / AdminPass123")
 
 with app.app_context():
     db.create_all()
     create_admin_if_needed()
 
-# --- AUTH ROUTES ---
 @app.route('/')
 def index():
     return render_template('index.html')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -69,7 +67,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-# --- DASHBOARDS ---
+#dahboard page
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -79,26 +77,23 @@ def dashboard():
         return doctor_dashboard()
     else:
         return patient_dashboard()
-
+#admin dahboard page
 def admin_dashboard():
     doc_count = User.query.filter_by(role='doctor').count()
     pat_count = User.query.filter_by(role='patient').count()
     appt_count = Appointment.query.count()
     return render_template('admin_dashboard.html', doc_count=doc_count, pat_count=pat_count, appt_count=appt_count)
-
+#doctor dahboard page
 def doctor_dashboard():
     today = date.today()
     upcoming = Appointment.query.filter(
         Appointment.doctor_id == current_user.id, 
         Appointment.date >= today
     ).order_by(Appointment.date, Appointment.time).all()
-    
-    # Get unique patients assigned to this doctor
     patient_ids = [a.patient_id for a in current_user.appointments_as_doctor]
     my_patients = User.query.filter(User.id.in_(patient_ids)).all() if patient_ids else []
-    
     return render_template('doctor_dashboard.html', upcoming=upcoming, patients=my_patients)
-
+#patient dashboard page
 def patient_dashboard():
     doctors = User.query.filter_by(role='doctor').all()
     specializations = list(set([d.specialization for d in doctors if d.specialization]))
@@ -115,7 +110,7 @@ def patient_dashboard():
     
     return render_template('patient_dashboard.html', specializations=specializations, upcoming=upcoming, history=history)
 
-# --- PATIENT FEATURES ---
+#patient functions
 @app.route('/doctors/<spec>')
 @login_required
 def doctors_by_spec(spec):
@@ -129,9 +124,9 @@ def book():
     form = AppointmentForm()
     doctors = User.query.filter_by(role='doctor').all()
     form.doctor.choices = [(d.id, f"{d.name} ({d.specialization})") for d in doctors]
-    
+
+    #appointments data check
     if form.validate_on_submit():
-        # Prevent Double Booking: Check if doctor has a non-cancelled appt at that time
         exists = Appointment.query.filter_by(doctor_id=form.doctor.data, date=form.date.data, time=form.time.data).first()
         if exists and exists.status != 'Cancelled':
             flash('Doctor is already booked at this time.', 'danger')
@@ -160,7 +155,6 @@ def profile():
         return redirect(url_for('dashboard'))
     return render_template('profile.html', form=form)
 
-# --- DOCTOR FEATURES ---
 @app.route('/doctor/availability', methods=['GET', 'POST'])
 @login_required
 def update_availability():
@@ -207,7 +201,7 @@ def view_history(patient_id):
     history = Appointment.query.filter_by(patient_id=patient.id, status='Completed').all()
     return render_template('history.html', patient=patient, history=history)
 
-# --- ADMIN FEATURES ---
+
 @app.route('/admin/users')
 @login_required
 def admin_users():
@@ -263,7 +257,6 @@ def admin_appointments():
 @login_required
 def cancel_appt(id):
     appt = Appointment.query.get_or_404(id)
-    # Check permissions
     if current_user.role == 'patient' and appt.patient_id != current_user.id:
         return "Unauthorized", 403
     appt.status = 'Cancelled'
@@ -276,7 +269,6 @@ def cancel_appt(id):
 def delete_user(id):
     if current_user.role != 'admin': return redirect(url_for('dashboard'))
     user = User.query.get_or_404(id)
-    # Delete related data first
     Appointment.query.filter((Appointment.doctor_id==id) | (Appointment.patient_id==id)).delete()
     db.session.delete(user)
     db.session.commit()
