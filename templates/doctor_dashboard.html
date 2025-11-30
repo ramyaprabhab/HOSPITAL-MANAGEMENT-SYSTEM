@@ -1,5 +1,6 @@
-{% extends "base.html" %}
-{% block content %}
+{%extends "base.html"%}
+{%block content%}
+#doctrs dhsbd html
 <h2>Doctor Dashboard</h2>
 <div class="mb-3">
     <a href="{{ url_for('update_availability') }}" class="btn btn-info">My Availability</a>
@@ -10,28 +11,28 @@
         <h3>Upcoming Appointments</h3>
         <table class="table">
             <tr><th>Date</th><th>Patient</th><th>Status</th><th>Action</th></tr>
-            {% for a in upcoming %}
+            {%for a in upcoming%}
             <tr>
-                <td>{{ a.date }} @ {{ a.time }}</td><td>{{ a.patient.name }}</td><td>{{ a.status }}</td>
+                <td>{{a.date}} @ {{a.time}}</td><td>{{a.patient.name }}</td><td>{{a.status }}</td>
                 <td>
-                    {% if a.status == 'Booked' %}
+                    {% if a.status == 'Booked'%}
                     <a href="{{ url_for('treatment', appt_id=a.id) }}" class="btn btn-sm btn-success">Complete</a>
                     <form action="{{ url_for('cancel_appt', id=a.id) }}" method="POST" style="display:inline"><button class="btn btn-sm btn-danger">Cancel</button></form>
-                    {% elif a.status == 'Completed' %}
+                    {% elif a.status == 'Completed'%}
                     <a href="{{ url_for('treatment', appt_id=a.id) }}" class="btn btn-sm btn-secondary">Edit Notes</a>
-                    {% endif %}
+                    {%endif%}
                 </td>
             </tr>
-            {% endfor %}
+            {%endfor%}
         </table>
     </div>
     <div class="col-md-4">
         <h3>My Patients</h3>
         <ul class="list-group">
-            {% for p in patients %}
+            {%for p in patients %}
             <li class="list-group-item">{{ p.name }} <a href="{{ url_for('view_history', patient_id=p.id) }}" class="badge bg-primary float-end">History</a></li>
-            {% endfor %}
+            {%endfor%}
         </ul>
     </div>
 </div>
-{% endblock %}
+{%endblock%}
