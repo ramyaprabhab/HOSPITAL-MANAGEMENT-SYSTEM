@@ -12,7 +12,7 @@ class RegisterForm(FlaskForm):
     contact=StringField('Contact',validators=[DataRequired()])
     age=IntegerField('Age',validators=[DataRequired()])
     submit=SubmitField('Register')
-
+#dr form cls
 class DoctorForm(FlaskForm):
     name=StringField('Name', validators=[DataRequired()])
     email=StringField('Email', validators=[DataRequired(),Email()])
@@ -28,7 +28,7 @@ class AppointmentForm(FlaskForm):
         ('16:00','04:00 PM'), ('17:00','05:00 PM')
     ], validators=[DataRequired()])
     submit = SubmitField('Book Appointment')
-
+#p form cls
 class ProfileForm(FlaskForm):
     name=StringField('Full Name', validators=[DataRequired()])
     contact=StringField('Contact', validators=[DataRequired()])
@@ -36,7 +36,6 @@ class ProfileForm(FlaskForm):
     age=IntegerField('Age (Patients Only)', validators=[Optional()])
     password=PasswordField('New Password (leave blank)', validators=[Optional()])
     submit=SubmitField('Update Profile')
-
 class AvailabilityForm(FlaskForm):
     notes=TextAreaField('Availability (e.g., "Mon-Fri, 9AM - 5PM")', validators=[DataRequired()])
     submit=SubmitField('Update Availability')
