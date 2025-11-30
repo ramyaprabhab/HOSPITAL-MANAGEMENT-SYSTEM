@@ -117,9 +117,8 @@ def book():
     form = AppointmentForm()
     doctors = User.query.filter_by(role='doctor').all()
     form.doctor.choices = [(d.id, f"{d.name} ({d.specialization})") for d in doctors]
-    
+    #the 2* booking thingy fr preventing the dble bokin for the dr apmt
     if form.validate_on_submit():
-        # Prevent Double Booking: Check if doctor has a non-cancelled appt at that time
         exists=Appointment.query.filter_by(doctor_id=form.doctor.data, date=form.date.data, time=form.time.data).first()
         if exists and exists.status != 'Cancelled':
             flash('Doctor is already booked at this time.', 'danger')
